@@ -9,24 +9,26 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class FileDataStream implements DataStream<String, Object> {
-  private final List<Object> elements;
+public final class FileDataStream<T> implements DataStream<T> {
+  private final List<T> elements;
   private final AtomicInteger currentIndex;
   private final AtomicBoolean isDone;
+  private final AtomicBoolean isReady;
 
   public FileDataStream() {
     this.elements = Collections.synchronizedList(new LinkedList<>());
     isDone = new AtomicBoolean(false);
     currentIndex = new AtomicInteger(0);
+    isReady = new AtomicBoolean(false);
   }
 
-  public void add(Object line) {
+  public void add(T line) {
     elements.add(line);
   }
 
   @Override
   public boolean isReady() {
-    return !elements.isEmpty();
+    return isReady.get();
   }
 
   public void done() {
@@ -39,15 +41,15 @@ public class FileDataStream implements DataStream<String, Object> {
   }
 
   @Override
-  public Object get(int index) {
+  public T get(int index) {
         return elements.get(index);
   }
 
   @Override
-  public List<Object> getAll() {
-    synchronized (elements) {
+  public List<T> getAll() {
+    while (!isDone()) {}
+
       return new ArrayList<>(elements);
-    }
   }
 
   @Override
@@ -71,7 +73,17 @@ public class FileDataStream implements DataStream<String, Object> {
   }
 
   @Override
-  public Object next() {
+  public T next() {
     return elements.get(currentIndex.getAndIncrement());
+  }
+
+  @Override
+  public int size() {
+    return elements.size();
+  }
+
+  @Override
+  public void begin() {
+    currentIndex.set(0);
   }
 }
