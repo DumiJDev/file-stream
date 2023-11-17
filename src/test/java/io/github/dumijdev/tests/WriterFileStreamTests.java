@@ -5,6 +5,7 @@ import io.github.dumijdev.filestream.model.ReaderFileStreamImpl;
 import io.github.dumijdev.filestream.model.WriterFileStream;
 import io.github.dumijdev.filestream.model.WriterFileStreamImpl;
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,14 @@ public class WriterFileStreamTests {
     readerFileStream = new ReaderFileStreamImpl();
   }
 
+  @AfterEach
+  void cleanup() {
+    if (fileOut != null && fileOut.exists()) {
+      fileOut.delete();
+    }
+  }
+
+
   @SneakyThrows
   @Test
   void shouldWriteFile() {
@@ -37,7 +46,12 @@ public class WriterFileStreamTests {
     stream.begin();
 
     Assertions.assertTrue(fileOut.exists());
+
+    var contentIn = Files.readString(fileIn.toPath());
+    var contentOut = Files.readString(fileOut.toPath());
+    Assertions.assertEquals(contentIn, contentOut);
   }
+
 
   @SneakyThrows
   @Test
@@ -48,6 +62,12 @@ public class WriterFileStreamTests {
     stream.begin();
 
     Assertions.assertTrue(fileOut.exists());
+
+    var contentIn = Files.readString(fileIn.toPath());
+    var contentOut = Files.readString(fileOut.toPath());
+    Assertions.assertEquals(contentIn.toUpperCase(), contentOut);
   }
+
+
 
 }
