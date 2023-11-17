@@ -11,5 +11,13 @@ public interface WriterFileStream<R> {
 
   void write(DataStream<R> dataStream, File file, Function<R, String> transformer) throws IOException;
 
+  void writeAndWait(DataStream<R> dataStream, File file, Function<R, String> transformer) throws IOException;
+
+  boolean isDone();
+
+  default void writeAndWait(DataStream<R> dataStream, File file) throws IOException {
+    writeAndWait(dataStream, file, null);
+  }
+
   void stop();
 }
