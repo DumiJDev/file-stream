@@ -29,21 +29,11 @@ public class WriterFileStreamTests {
     readerFileStream = new ReaderFileStreamImpl();
   }
 
-  @AfterEach
-  void cleanup() {
-    if (fileOut != null && fileOut.exists()) {
-      fileOut.delete();
-    }
-  }
-
-
   @SneakyThrows
   @Test
   void shouldWriteFile() {
     var stream = readerFileStream.read(fileIn);
     writerFileStream.write(stream, fileOut);
-
-    stream.begin();
 
     Assertions.assertTrue(fileOut.exists());
 
@@ -52,14 +42,11 @@ public class WriterFileStreamTests {
     Assertions.assertEquals(contentIn, contentOut);
   }
 
-
   @SneakyThrows
   @Test
   void shouldWriteFileWithTransform() {
     var stream = readerFileStream.read(fileIn);
     writerFileStream.write(stream, fileOut, a -> a.toString().toUpperCase());
-
-    stream.begin();
 
     Assertions.assertTrue(fileOut.exists());
 

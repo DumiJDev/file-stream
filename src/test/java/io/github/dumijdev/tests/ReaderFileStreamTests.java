@@ -33,7 +33,6 @@ public class ReaderFileStreamTests {
     }
 
     Assertions.assertTrue(dataStream.isDone());
-    System.out.println(dataStream.size());
   }
 
   @SneakyThrows
@@ -48,7 +47,6 @@ public class ReaderFileStreamTests {
     }
     
     Assertions.assertTrue(dataStream.isDone());
-    System.out.println(dataStream.size());
   }
 
   @SneakyThrows
@@ -56,7 +54,6 @@ public class ReaderFileStreamTests {
   void shouldReadInBackgroundReturnAll() {
     DataStream<Object> dataStream = readerFileStream.read(file);
     Assertions.assertFalse(dataStream.getAll().isEmpty());
-    System.out.println(dataStream.size());
   }
 
   @SneakyThrows
@@ -70,8 +67,6 @@ public class ReaderFileStreamTests {
     }
     
     Assertions.assertFalse(dataStream.hasNext());
-
-    System.out.println(dataStream.size());
   }
 
 }
