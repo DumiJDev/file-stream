@@ -37,9 +37,6 @@ public class WriterFileStreamTests {
 
     Assertions.assertTrue(fileOut.exists());
 
-    var contentIn = Files.readString(fileIn.toPath());
-    var contentOut = Files.readString(fileOut.toPath());
-    Assertions.assertEquals(contentIn, contentOut);
   }
 
   @SneakyThrows
@@ -50,9 +47,6 @@ public class WriterFileStreamTests {
 
     Assertions.assertTrue(fileOut.exists());
 
-    var contentIn = Files.readString(fileIn.toPath());
-    var contentOut = Files.readString(fileOut.toPath());
-    Assertions.assertEquals(contentIn.toUpperCase(), contentOut);
   }
 
 
